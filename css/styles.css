@@ -1,0 +1,83 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(117, 117, 252);
+}
+
+#startMenu {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    background-color: blue;
+    border: 5px solid rgb(13, 13, 113);
+    align-items: center;
+}
+
+.startButton, .combatButton {
+    border: none;
+    width: 40%;
+    background-color: blue;
+    font-size: 1.5em;
+}
+
+.startButton:hover, .combatButton:hover{
+    background-color: white;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+#combatScreen{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#topCombatMessage {
+    height: 10rem;
+    background-color: blue;
+    border: 5px solid rgb(13, 13, 113);
+    width: 80%;
+    font-size: 1.5em;
+    display: block;
+}
+
+#enemyImage {
+    height: 500px;
+    background-color: blue;
+    border: 5px solid rgb(13, 13, 113);
+    width: 80%;
+}
+
+#combatMenu {
+    width: 80%;
+    background-color: blue;
+    border: 5px solid rgb(13, 13, 113);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#nameEntry {
+    height: 10em;
+    width: 80%;
+    background-color: blue;
+    border: 5px solid rgb(13, 13, 113);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+#nameEntry > label {
+    font-size: 1.5em;
+}
+
+#nameEntry > input {
+    height: 2em;
+    font-size: 1.5em;
+}
