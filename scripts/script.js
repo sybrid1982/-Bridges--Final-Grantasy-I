@@ -81,7 +81,22 @@ let gameState = {
     grantHealth: 10,
     playerHealth: 40,
     wins: 0,
-    gameOver: false
+    gameOver: false,
+    messages: [],
+    addMessage: addMessage = (msg) => {
+        if(gameState.messages && gameState.messages.length > 4) {
+            console.log('ShiftCalled');
+            for(let i = 1; i < 5; i++) {
+                console.log(gameState.messages[i-1] + ' ' + gameState.messages[i]);
+                gameState.messages[i-1] = gameState.messages[i];
+            }
+            gameState.messages[4] = msg;
+        } else if (gameState.messages) {
+            gameState.messages.push(msg);
+        } else {
+            gameState.messages[0]=msg;
+        }
+    }
 }
 
 let startGameGUI = () => {
@@ -104,21 +119,55 @@ let startGameWithName = () => {
 }
 
 let messageGUI = (message) => {
-    document.querySelector('#topCombatMessage').textContent = message;
+    gameState.addMessage(message);
+    let msg = gameState.messages.toString();
+    msg = msg.replace(/,/g,'</br>');
+    document.querySelector('#topCombatMessage').innerHTML = msg;
+}
+
+let checkGrantDeath = () => {
+    if(gameState.grantHealth <= 0) {
+        gameState.wins++;
+        messageSender('Grant slumps to the ground.', messageGUI);
+
+        switch(gameState.wins) {
+            case 0:
+                break;
+            case 1:
+                messageSender(`What sorcery is this?  Though Grant had fallen he rises again!`, messageGUI);
+                gameState.grantHealth = 10;
+                break;
+            case 2:
+                messageSender(`Can Grant be stopped?  Some sort of foul (or maybe fowl?) magic brings him back to his feet!`, messageGUI);
+                gameState.grantHealth = 10;
+                break;
+            default:
+                messageSender(`Grant fails to rise again.  You are victorious!`, messageGUI);
+                endGameGUI();
+                break;
+        }
+    }
 }
 
 let attackGUI = () => {
-    let damage = getDamage(1,5);
-    gameState.grantHealth -= damage;
-    messageSender(`You have dealt ${damage} to Grant!`, messageGUI);
+    if(!gameState.gameOver) {
+        let damage = getDamage(1,5);
+        gameState.grantHealth -= damage;
+        messageSender(`You have dealt ${damage} to Grant!`, messageGUI);
+        checkGrantDeath();
+    }
 }
 
 let fleeGUI = () => {
-
+    if(!gameState.gameOver) {
+        messageSender(`You flee the field, Grant is victorious!`, messageGUI);
+        endGameGUI();
+    }
 }
 
 let endGameGUI = () => {
-
+    gameState.gameOver = true;
+    // Show some sort of option to restart the game
 }
 
 let startCombatGUI = () => {
@@ -126,6 +175,7 @@ let startCombatGUI = () => {
     gameState.playerHealth = 40;
     gameState.wins = 0;
     gameState.gameOver = false;
+    gameState.messages = [];
 
     document.getElementById('combatScreen').style.display = 'flex';
     document.getElementById('attack').addEventListener('click', attackGUI, false);
