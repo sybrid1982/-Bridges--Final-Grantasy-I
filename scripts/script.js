@@ -27,7 +27,7 @@ let startCombat = (playerName) => {
         } else if (!choice || choice.toLowerCase()==='attack') {
             let damage = getDamage(1,5);
             grantHealth -= damage;
-            console.log(`You have dealt ${damage}!`);
+            console.log(`You have dealt ${damage} to Grant!`);
         } else {
             console.log(`I don't understand ${choice}.  You must Attack or Quit.`);
         }
@@ -71,7 +71,18 @@ let getDamage = (min, max) => {
  * You can skip anything written after here
  * 
  * Especially if I can't get it working :D
+ * 
+ * I feel like I should be trying to wrap all this
+ * in an IFEE but I'm not entirely sure how to go
+ * about doing that.
  *************************************/
+
+let gameState = {
+    grantHealth: 10,
+    playerHealth: 40,
+    wins: 0,
+    gameOver: false
+}
 
 let startGameGUI = () => {
     console.log("This doesn't work yet!");
@@ -82,15 +93,44 @@ let startGameGUI = () => {
 
     // Show the name screen
     document.querySelector('#nameEntry').style.display = 'flex';
-    // Await name entry
 }
 
 let startGameWithName = () => {
     let playerName = document.getElementById('name').value;
     console.log(playerName);
     document.querySelector('#nameEntry').style.display = 'none';
+
+    startCombatGUI();
 }
 
+let messageGUI = (message) => {
+    document.querySelector('#topCombatMessage').textContent = message;
+}
+
+let attackGUI = () => {
+    let damage = getDamage(1,5);
+    gameState.grantHealth -= damage;
+    messageSender(`You have dealt ${damage} to Grant!`, messageGUI);
+}
+
+let fleeGUI = () => {
+
+}
+
+let endGameGUI = () => {
+
+}
+
+let startCombatGUI = () => {
+    gameState.grantHealth = 10;
+    gameState.playerHealth = 40;
+    gameState.wins = 0;
+    gameState.gameOver = false;
+
+    document.getElementById('combatScreen').style.display = 'flex';
+    document.getElementById('attack').addEventListener('click', attackGUI, false);
+    document.getElementById('flee').addEventListener('click', fleeGUI, false);
+}
 
 // Set start buttons to work
 (function(){
